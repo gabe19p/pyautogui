@@ -1,14 +1,20 @@
-import pyautogui as pt
-import keyboard
-import random
-from time import sleep
+from pynput import mouse
 
-screenWidth, screenHeight = pt.size() # Get the size of the primary monitor.
-currentMouseX, currentMouseY = pt.position() # Get the XY position of the mouse
-pt.FAILSAFE = True
+xCoords = []
+yCoords = []
 
-# set a half second sleep time before starting the program
-sleep(1)
-# print out the height/width of the screen and x/y coords
-print(screenWidth, screenHeight)
-print(currentMouseX, currentMouseY)
+# need to figure out a way to set the original x,y coords for each item
+# start off with one item            
+def findCoords(x, y, button, pressed):
+    xCoord = int(x)
+    yCoord = int(y)
+    xCoords.append(xCoord)
+    yCoords.append(yCoord)
+    return False
+
+with mouse.Listener(on_click=findCoords) as listener:
+    listener.join()
+    listener.stop()
+
+print(f"X Coordinates: {xCoords}")
+print(f"Y Coordinates: {yCoords}")
