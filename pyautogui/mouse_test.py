@@ -1,20 +1,38 @@
-from pynput import mouse
+from pynput.mouse import Listener
 
-xCoords = []
-yCoords = []
+clickData = []
 
-# need to figure out a way to set the original x,y coords for each item
-# start off with one item            
-def findCoords(x, y, button, pressed):
-    xCoord = int(x)
-    yCoord = int(y)
-    xCoords.append(xCoord)
-    yCoords.append(yCoord)
-    return False
+def on_click(x, y, button, pressed):
+    if pressed:
+        click_info = {
+            'x': int(x),
+            'y': int(y),
+        }
+        clickData.append(click_info)
 
-with mouse.Listener(on_click=findCoords) as listener:
+    # Save clicks to a file
+    printClicks()
+
+def printClicks():
+    print(clickData)
+
+# Create a listener
+with Listener(on_click=on_click) as listener:
     listener.join()
-    listener.stop()
 
-print(f"X Coordinates: {xCoords}")
-print(f"Y Coordinates: {yCoords}")
+
+# from pynput.mouse import Listener
+
+# clickData = []
+          
+# def addCoords(x, y, button, pressed):
+#         click_info = {
+#             'x': x,
+#             'y': y,
+#         }
+#         clickData.append(click_info)
+
+# with Listener(on_click=addCoords) as listener:
+#     listener.join()
+
+# print(f"X Coordinates: {clickData}")
