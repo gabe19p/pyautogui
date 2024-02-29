@@ -26,28 +26,35 @@ pt.FAILSAFE = True
 
 clickData = []
 clickDataInt = 0
- 
+
+
+# this function takes the coordinates ...
+# (from the x and y ctk input fields) ...
+# and then appends that data into the clickData list
 def appendCoords():
     global clickDataInt
+    # get data for x, y, and pause
     xD = xCoords.get()
     yD = yCoords.get()
+    pD = longPause.get()
     coordInfo = {
         'x': xD,
-        'y': yD
+        'y': yD,
+        'p': pD,
     }
     print(f"Coord Info: {coordInfo}")
     clickData.append(coordInfo)
     print(f"ClickData: {clickData}")
 
-    clickDataText = ctk.CTkLabel(frameBody1, text=f"Click {clickDataInt + 1}\nX: {clickData[clickDataInt]['x']}, Y: {clickData[clickDataInt]['y']}")
-    clickDataText.pack()
+    clickDataText = ctk.CTkLabel(frameBody1, text=f"Click {clickDataInt + 1}\nX: {clickData[clickDataInt]['x']}, Y: {clickData[clickDataInt]['y']}, Pause: {clickData[clickDataInt]['p']}")
+    clickDataText.pack(pady = 2)
 
     clickDataInt += 1
 
-
-
-
-# function to get coordinates
+# this function allows the user to ...
+# hover their mouse over specific coordinates ...
+# then it prints those coordinates ...
+# for the user to see then append
 def mouseCoordinates():
     sleep(3)
     currentMouseX, currentMouseY = pt.position() # Get the XY position of the mouse
@@ -79,6 +86,11 @@ xCoords.pack(pady=5, padx=5, fill="both")
 # y coord
 yCoords = ctk.CTkEntry(master=frameBody1, placeholder_text="y", width=200)
 yCoords.pack(pady=5, padx=5, fill="both")
+# long pause
+longPause = ctk.CTkCheckBox(frameBody1, checkbox_width = 16,
+    checkbox_height= 16, border_width = 2, text="Extended pause after click", onvalue = 'Yes',
+    offvalue = 'No')
+longPause.pack(pady=5, padx=5, fill="both")
 # add coords button
 addCoords = ctk.CTkButton(frameBody1, text="Add Coordinates", command=appendCoords)
 addCoords.pack(pady=5, padx=5, fill="both")
