@@ -37,14 +37,17 @@ while currentCycle < loopCount:
     x2Variable = random.randint(575,585)
     y1Variable = random.randint(245,255)
     y2Variable = random.randint(285,295)
+        # below are the drag variables to spice up the speed of the mouse movement
+    dragVariable1 = (random.randint(100,200) / 1000)
+    dragVariable2 = (random.randint(90, 210) / 1000)
     # action for the first click of the function
     # start with a move, a pause, then a click
-    pt.moveTo(x1Variable, y1Variable)
+    pt.moveTo(x1Variable, y1Variable, dragVariable1)
     sleep(pauseVariable1)
     pt.click()
     # action for the second click of the function
     # start with a move, a pause, then a click
-    pt.moveTo(x2Variable, y2Variable)
+    pt.moveTo(x2Variable, y2Variable, dragVariable2)
     sleep(pauseVariable2)
     pt.click()
     # press and release a keyboard action 
