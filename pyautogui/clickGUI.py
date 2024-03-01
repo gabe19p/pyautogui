@@ -16,16 +16,16 @@ ctk.set_default_color_theme("dark-blue")
 # set the GUI size
 root = ctk.CTk()
 root.title("OSRS Clicker")
-root.geometry("400x600")
+root.geometry("500x600")
 
 # logic to run inside the GUI
 # 
 # 
 pt.FAILSAFE = True
 
-
 clickData = []
 clickDataInt = 0
+loopCount = 0
 
 
 # this function takes the coordinates ...
@@ -61,6 +61,53 @@ def mouseCoordinates():
     currentX.configure(text=f"X Coordinate: {currentMouseX}")
     currentY.configure(text=f"Y Coordinate: {currentMouseY}")
     return currentMouseX, currentMouseY
+
+# this function executes the clicks
+# 
+# 
+def startClicks():
+    global loopCount
+    currentCount = 0
+    loopCount = int(loopsEntry.get())
+    cycleTime = (int(cycleTimeEntry.get())*1000)
+    spacebarStatus = spacebar.get()
+
+
+
+    
+    while currentCount < loopCount:
+        # randomize the cycle time for each loop
+        randomCycleTime = (random.randint(cycleTime, cycleTime+2000)/1000)
+        # for loop to run through the clicks
+        # all clicks happen first 
+        for click in clickData:
+            randomX = random.randint(int(click['x'])-10,int(click['x'])+10)
+            randomY = random.randint(int(click['y'])-10,int(click['y'])+10)
+            drag = (random.randint(100, 120) / 1000)       
+            if click['p'] == 'Yes':
+                preClickPause = (random.randint(200,500) / 1000)
+                postClickPause = (random.randint(2000, 3000) / 1000)
+            else:
+                preClickPause = (random.randint(200,500) / 1000)
+                postClickPause = (random.randint(200, 500) / 1000)
+            pt.moveTo(randomX, randomY, drag)
+            sleep(preClickPause)
+            pt.click()
+            sleep(postClickPause)
+            print("End of click")
+        
+        # pick up here after all clicks
+        if spacebarStatus == 'Yes':
+            # pause for 1-2 seconds then press the space bar on the keyboard
+            sleep(random.randint(1000,2000)/1000)
+            keyboard.press_and_release('space')  
+            sleep(randomCycleTime)
+        else:
+            # sleep for the random cycle and then run the clicks again
+            sleep(randomCycleTime)
+        currentCount += 1
+
+
 
 
 # building the GUI
@@ -118,12 +165,23 @@ currentY.pack()
 # 
 actionFrame = ctk.CTkFrame(master=bottomFrame, fg_color="transparent")
 actionFrame.pack(side=ctk.RIGHT, padx=20)
+# loops input
+loopsEntry = ctk.CTkEntry(actionFrame, placeholder_text='Loop count? Ex: 50')
+loopsEntry.pack(pady=5, padx=5)
+# cycle time input
+cycleTimeEntry = ctk.CTkEntry(actionFrame, placeholder_text='Cycle time? Ex: 13')
+cycleTimeEntry.pack(pady=5, padx=5)
+# spacebar check
+spacebar = ctk.CTkCheckBox(actionFrame, checkbox_width = 16,
+    checkbox_height= 16, border_width = 2, text='SpaceBar', onvalue = 'Yes',
+    offvalue = 'No')
+spacebar.pack(pady=5, padx=5)
 # start button
-startButton = ctk.CTkButton(master=actionFrame, text="Start", fg_color="green")
+startButton = ctk.CTkButton(master=actionFrame, text="Start", fg_color="green", command=startClicks)
 startButton.pack(pady=5, padx=5)
 # stop button
-stopButton = ctk.CTkButton(master=actionFrame, text="Stop", fg_color="red")
-stopButton.pack(pady=5, padx=5)
+# stopButton = ctk.CTkButton(master=actionFrame, text="Stop", fg_color="red", command=stopClicks)
+# stopButton.pack(pady=5, padx=5)
 
 
 
