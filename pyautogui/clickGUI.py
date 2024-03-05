@@ -94,6 +94,7 @@ def button_start_clicks():
             keyboard.press_and_release('space')  
             sleep(randomCycleTime)
         else:
+            print(f"Pause length: {randomCycleTime}")
             print("End of click cycle...")
             # sleep for the random cycle and then run the clicks again
             sleep(randomCycleTime)
