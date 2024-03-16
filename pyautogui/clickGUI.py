@@ -117,19 +117,46 @@ frame.pack(pady=20, padx=20, fill="both", expand=True)
 title = ctk.CTkLabel(master=frame, text=("Click Automation"), font=('Roboto', 25))
 title.pack(pady=20, padx=10)
 # 
-# insert coordinates frames
 # 
-frameBody1 = ctk.CTkFrame(master=frame, fg_color="transparent")
-frameBody1.pack(ipady=5, fill="none")
+# top frame
+# 
+# 
+topFrame = ctk.CTkFrame(master=frame, fg_color="transparent")
+topFrame.pack(pady=20, padx=20, side=ctk.TOP ,fill="both")
+# 
+# top left frame
+# 
+topLeftFrame = ctk.CTkFrame(topFrame, fg_color="transparent")
+topLeftFrame.pack(pady=20, padx=20, side=ctk.LEFT ,fill="both")
+# click label
+clickLabel = ctk.CTkLabel(topLeftFrame, text="Click")
+clickLabel.pack()
+# click size
+clickSize = ctk.CTkSlider(topLeftFrame, width=150, button_length=10, from_=1, to=3, number_of_steps=2)
+clickSize.pack(pady=5, padx=5)
 # add coords button
-addCoords = ctk.CTkButton(frameBody1, text="Add Coordinates", command=mouseCoordinates)
-addCoords.pack(pady=5, padx=5, fill="both")
-
-# long pause
-longPause = ctk.CTkCheckBox(frameBody1, checkbox_width = 16,
-    checkbox_height= 16, border_width = 2, text="LONG PAUSE", onvalue = 'Yes',
-    offvalue = 'No')
-longPause.pack(anchor=ctk.CENTER)
+addCoords = ctk.CTkButton(topLeftFrame, text="Add Coordinates", command=mouseCoordinates)
+addCoords.pack(pady=5, padx=5, side=ctk.BOTTOM)
+# sleep entry
+clickSleep = ctk.CTkEntry(topLeftFrame, placeholder_text="Sleep Time")
+clickSleep.pack(pady=5, padx=5, side=ctk.BOTTOM)
+# 
+# top right frame
+# 
+topRightFrame = ctk.CTkFrame(topFrame, fg_color="transparent")
+topRightFrame.pack(pady=20, padx=20, side=ctk.RIGHT ,fill="both")
+# keys label
+keyLabel = ctk.CTkLabel(topRightFrame, text="Key")
+keyLabel.pack()
+# key entry
+keyEntry = ctk.CTkEntry(topRightFrame, placeholder_text="Key")
+keyEntry.pack(pady=5, padx=5)
+# sleep entry
+keySleep = ctk.CTkEntry(topRightFrame, placeholder_text="Sleep Time")
+keySleep.pack(pady=5, padx=5)
+# add key button
+addKey = ctk.CTkButton(topRightFrame, text="Add Key")
+addKey.pack(pady=5, padx=5, side=ctk.RIGHT)
 # 
 # 
 # bottom actions frame
