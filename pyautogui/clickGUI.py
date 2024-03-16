@@ -169,14 +169,7 @@ bottomFrame.pack(pady=20, padx=20, side=ctk.BOTTOM ,fill="both")
 # 
 leftFrame = ctk.CTkFrame(master=bottomFrame, fg_color="transparent")
 leftFrame.pack(pady=20, padx=20, side=ctk.LEFT ,fill="both")
-# spacebar check
-spacebar = ctk.CTkCheckBox(leftFrame, checkbox_width = 16,
-    checkbox_height= 16, border_width = 2, text='SPACE BAR CYCLE', onvalue = 'Yes',
-    offvalue = 'No')
-spacebar.pack(pady=5, padx=5)
-# cycle time input
-cycleTimeEntry = ctk.CTkEntry(leftFrame, placeholder_text='Cycle time? Ex: 13')
-cycleTimeEntry.pack(pady=5, padx=5)
+
 # 
 # bottom right frame for starting the program
 # 
@@ -194,31 +187,3 @@ stopButton.pack(pady=5, padx=5)
 
 
 root.mainloop()
-
-
-
-
-# # label for the first clicks
-# label = ctk.CTkLabel(master=frameBody1, text="Add Coordinates")
-# label.pack()
-# # x coord
-# xCoords = ctk.CTkEntry(master=frameBody1, placeholder_text="x", width=200)
-# xCoords.pack(pady=5, padx=5, fill="both")
-# # y coord
-# yCoords = ctk.CTkEntry(master=frameBody1, placeholder_text="y", width=200)
-# yCoords.pack(pady=5, padx=5, fill="both")
-
-# # 
-# # bottom left frame for finding location
-# # 
-# locateFrame = ctk.CTkFrame(master=bottomFrame, fg_color="transparent")
-# locateFrame.pack(side=ctk.LEFT, padx=20)
-# # location button
-# coordinatesButton = ctk.CTkButton(master=locateFrame, text="Locate Coordinates", command=mouseCoordinates)
-# coordinatesButton.pack(pady=5, padx=5)
-# # paste x location
-# currentX = ctk.CTkLabel(master=locateFrame, text="X Coordinate: ")
-# currentX.pack()
-# # paste y location
-# currentY = ctk.CTkLabel(master=locateFrame, text="Y Coordinate: ")
-# currentY.pack()
