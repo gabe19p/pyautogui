@@ -28,6 +28,8 @@ clickData = []
 clickDataInt = 0
 # global stop variable
 stop = False
+hotkey = 'f8'
+function_running = False
 
 
 # this function allows the user to ...
@@ -122,6 +124,7 @@ frameBody1.pack(ipady=5, fill="none")
 # add coords button
 addCoords = ctk.CTkButton(frameBody1, text="Add Coordinates", command=mouseCoordinates)
 addCoords.pack(pady=5, padx=5, fill="both")
+
 # long pause
 longPause = ctk.CTkCheckBox(frameBody1, checkbox_width = 16,
     checkbox_height= 16, border_width = 2, text="LONG PAUSE", onvalue = 'Yes',
@@ -158,6 +161,7 @@ startButton.pack(pady=5, padx=5)
 # stop button
 stopButton = ctk.CTkButton(master=rightFrame, text="Stop", fg_color="red", command=button_stop_clicks)
 stopButton.pack(pady=5, padx=5)
+
 
 
 
