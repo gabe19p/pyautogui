@@ -24,8 +24,8 @@ root.geometry("500x600")
 # 
 pt.FAILSAFE = True
 
-clickData = []
-clickDataInt = 0
+actionData = []
+actionDataInt = 0
 # global stop variable
 stop = False
 hotkey = 'f8'
@@ -37,22 +37,26 @@ function_running = False
 # then it prints those coordinates ...
 # for the user to see then append
 def mouseCoordinates():
-    global clickDataInt
+    global actionDataInt
     sleep(3)
     currentMouseX, currentMouseY = pt.position() # Get the XY position of the mouse
     # get data for x, y, and pause
-    xD = currentMouseX
-    yD = currentMouseY
-    pD = longPause.get()
-    coordInfo = {
-        'x': xD,
-        'y': yD,
-        'p': pD,
+    xData = currentMouseX
+    yData = currentMouseY
+    sizeData = int(clickSize.get())
+    sleepData = clickSleep.get()
+    clickData = {
+        'type': 'click',
+        'x': xData,
+        'y': yData,
+        'size': sizeData,
+        'sleep': sleepData
     }
-    clickData.append(coordInfo)
-    clickDataText = ctk.CTkLabel(frameBody1, text=f"Click {clickDataInt + 1}\nX: {clickData[clickDataInt]['x']}, Y: {clickData[clickDataInt]['y']}, Pause: {clickData[clickDataInt]['p']}")
-    clickDataText.pack(pady = 2)
-    clickDataInt += 1
+    actionData.append(clickData)
+    actionDataText = ctk.CTkLabel(leftFrame, text=f"Action {actionDataInt + 1}\nX: {clickData['x']}, Y: {clickData['y']}, Size: {clickData['size']}, Sleep: {clickData['sleep']}")
+    actionDataText.pack(pady = 2)
+    actionDataInt += 1
+    print(actionData)
     return currentMouseX, currentMouseY
 # functions to start and stop on the buttons
 # adds threading on start and then looks for stop
@@ -75,7 +79,7 @@ def button_start_clicks():
         # randomize the cycle time for each loop
         randomCycleTime = (random.randint(cycleTime, cycleTime+2000)/1000)
         # for loop to run through the clicks; all clicks happen first 
-        for click in clickData:
+        for click in actionData:
             randomX = random.randint(int(click['x'])-10,int(click['x'])+10)
             randomY = random.randint(int(click['y'])-10,int(click['y'])+10)
             drag = (random.randint(100, 120) / 1000)       
@@ -105,10 +109,27 @@ def button_start_clicks():
 def button_starter():
     t = threading.Thread(target=button_start_clicks)
     t.start()
+# add key function
+def add_key():
+    global actionDataInt
+    keyName = keyEntry.get()
+    sleepData = keySleep.get()
+    keyData = {
+        'type': 'key',
+        'keyName': keyName,
+        'sleep': sleepData
+    }
+    actionData.append(keyData)
+    actionDataText = ctk.CTkLabel(leftFrame, text=f"Action {actionDataInt + 1}\nKey: {keyData['keyName']}, Sleep: {keyData['sleep']}")
+    actionDataText.pack(pady = 2)
+    actionDataInt += 1
+    print(actionData)
 # 
 # 
 # 
 # building the GUI
+# 
+# 
 # 
 # this is the main frame of the GUI
 frame = ctk.CTkFrame(master=root)
@@ -126,37 +147,47 @@ topFrame.pack(pady=20, padx=20, side=ctk.TOP ,fill="both")
 # 
 # top left frame
 # 
-topLeftFrame = ctk.CTkFrame(topFrame, fg_color="transparent")
+topLeftFrame = ctk.CTkFrame(topFrame)
 topLeftFrame.pack(pady=20, padx=20, side=ctk.LEFT ,fill="both")
 # click label
 clickLabel = ctk.CTkLabel(topLeftFrame, text="Click")
 clickLabel.pack()
+# sleep entry
+clickSleep = ctk.CTkEntry(topLeftFrame, placeholder_text="Sleep Time")
+clickSleep.pack(pady=5, padx=5)
 # click size
-clickSize = ctk.CTkSlider(topLeftFrame, width=150, button_length=10, from_=1, to=3, number_of_steps=2)
-clickSize.pack(pady=5, padx=5)
+clickSizeLabel = ctk.CTkLabel(topLeftFrame, text="Click Size")
+clickSizeLabel.pack(pady=5, padx=5, side=ctk.TOP)
+clickSize = ctk.CTkSlider(topLeftFrame, width=100, button_length=3, from_=1, to=3, number_of_steps=2)
+clickSize.pack(pady=5, padx=5, side=ctk.TOP)
+# click Speed can go here
+clickSpeedLabel = ctk.CTkLabel(topLeftFrame, text="Click Speed")
+clickSpeedLabel.pack(pady=5, padx=5, side=ctk.TOP)
+clickSpeed = ctk.CTkSlider(topLeftFrame, width=100, button_length=3, from_=1, to=3, number_of_steps=2)
+clickSpeed.pack(pady=5, padx=5, side=ctk.TOP)
+# shift click can go here
+shiftClick = ctk.CTkCheckBox(topLeftFrame, checkbox_width = 20, checkbox_height = 20, border_width=2, text="Shift Click?", onvalue=True, offvalue=False)
+shiftClick.pack(pady=5, padx=5)
 # add coords button
 addCoords = ctk.CTkButton(topLeftFrame, text="Add Coordinates", command=mouseCoordinates)
 addCoords.pack(pady=5, padx=5, side=ctk.BOTTOM)
-# sleep entry
-clickSleep = ctk.CTkEntry(topLeftFrame, placeholder_text="Sleep Time")
-clickSleep.pack(pady=5, padx=5, side=ctk.BOTTOM)
 # 
 # top right frame
 # 
-topRightFrame = ctk.CTkFrame(topFrame, fg_color="transparent")
+topRightFrame = ctk.CTkFrame(topFrame)
 topRightFrame.pack(pady=20, padx=20, side=ctk.RIGHT ,fill="both")
 # keys label
 keyLabel = ctk.CTkLabel(topRightFrame, text="Key")
 keyLabel.pack()
-# key entry
-keyEntry = ctk.CTkEntry(topRightFrame, placeholder_text="Key")
-keyEntry.pack(pady=5, padx=5)
 # sleep entry
 keySleep = ctk.CTkEntry(topRightFrame, placeholder_text="Sleep Time")
 keySleep.pack(pady=5, padx=5)
+# key entry
+keyEntry = ctk.CTkEntry(topRightFrame, placeholder_text="Key")
+keyEntry.pack(pady=5, padx=5)
 # add key button
-addKey = ctk.CTkButton(topRightFrame, text="Add Key")
-addKey.pack(pady=5, padx=5, side=ctk.RIGHT)
+addKey = ctk.CTkButton(topRightFrame, text="Add Key", command=add_key)
+addKey.pack(pady=5, padx=5)
 # 
 # 
 # bottom actions frame
